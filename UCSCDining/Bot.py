@@ -1,10 +1,66 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from bs4 import BeautifulSoup
+import datetime
 import logging
 import os
-from CollegeName import *
-from Scraper import parse_menu
-import UCSCDining
+from UCSCDining import UCSCDining
+
+def get_menu(dining, college_name, meal=""):
+    text = ""
+    try:
+        now_date = datetime.datetime.now().date()
+        date = str(now_date.month) +"/" + str(now_date.day) + "/" + str(now_date.year)
+
+        if os.path.exists(dining.get_path() + dining.get_filename(college_name, date)):
+            input_source = open(dining.get_path() + dining.get_filename(college_name, date), 'r')
+        else:
+            url = dining.get_url(college, date)
+            input_source = requests.get(url).text
+            dining.cache(dining.get_filename(college_name, date), input_source)
+            
+        soup = BeautifulSoup(input_source, 'lxml')
+        startIndex = 2
+        text = college_name
+        
+        if meal:
+            meal_id = dining.get_desired_meal(meal)
+            if meal_id == -1:
+                meal_id = dining.get_current_meal()
+        else:
+            meal_id = dining.get_current_meal()
+            
+
+        for x in range (0,4):
+            try:
+                # Get the parsed menu based on the starting index
+                meal_name, menu = dining.parse_menu(soup, startIndex)
+                
+                # Print a seperator before the menu if it isn't our first time
+
+                if x == meal_id:
+                    if len(menu) == 0:
+                        text +="\nNot serving anything!"
+                    else:
+                        if meal_name == "Late":
+                            meal_name = "Late night"
+                        text += "\n"+meal_name + " has " + str(len(menu)) + " dishes"
+                        for x in menu:
+                            text += "\n" + x
+                    break
+                # The next index has to add 3 and the length of the menu
+                startIndex += len(menu) + 3
+            except Exception as e:
+                # No more meals
+                print(e)
+                text +="\nNot serving anything!"
+                break
+
+        return text
+
+    except Exception as e:
+        print("Invalid URL or college")
+        print(e)
+        return "Sorry, I'm having some trouble processing that"
 
 def start(bot, update):
     help_text = "Welcome to the UCSC Dining hall Telegram bot!"
@@ -23,65 +79,14 @@ def about(bot, update):
 def parse(bot, update):
     msg = update.message.text
     msg_list = msg.split(" ")
-    if verify_name(msg_list[0]):
-        college_name = get_college_name(msg_list[0])
+    dining = UCSCDining()
+    if dining.verify_name(msg_list[0]):
+        college_name = dining.get_college_name(msg_list[0])
         meal_name = msg_list[len(msg_list)-1]
-        meal_id = get_desired_meal(meal_name)
-        if (meal_id == -1):
-            soup, startIndex = UCSCDining.main(college=college_name)
-            text = college_name
-            meal_id = get_current_meal()
-
-            for x in range (0,4):
-                try:
-                    # Get the parsed menu based on the starting index
-                    meal, menu = parse_menu(soup, startIndex)
-                    if x == meal_id:
-                        if len(menu) == 0:
-                            text +=": Not serving anything!"
-                        else:
-                            text += ": "+meal + " has " + str(len(menu)) + " dishes"
-                            for x in menu:
-                                text += "\n" + x
-                        break
-                    # The next index has to add 3 and the length of the menu
-                    startIndex += len(menu) + 3
-                except Exception as e:
-                    # No more meals
-                    print(e)
-                    text +=": Not serving anything!"
-                    break
-            
-
-            bot.send_message(chat_id=update.message.chat_id, text=text)
-        else:
-            soup, startIndex = UCSCDining.main(college=college_name)
-            text = college_name
-            for x in range (0,4):
-                try:
-                    # Get the parsed menu based on the starting index
-                    meal, menu = parse_menu(soup, startIndex)
-                    if x == meal_id:
-                        if len(menu) == 0:
-                            text +=": Not serving anything!"
-                        else:
-                            text += ": "+meal + " has " + str(len(menu)) + " dishes"
-                            for x in menu:
-                                text += "\n" + x
-                        break
-                    # The next index has to add 3 and the length of the menu
-                    startIndex += len(menu) + 3
-                except Exception as e:
-                    # No more meals
-                    print(e)
-                    text +=": Not serving anything!"
-                    break
-
-            bot.send_message(chat_id=update.message.chat_id, text=text)
-            
+        text = get_menu(dining, college_name, meal=meal_name)
+        bot.send_message(chat_id=update.message.chat_id, text=text)
     else:
         bot.send_message(chat_id=update.message.chat_id, text="Sorry, I don't know what college that is!")
-    #bot.send_message(chat_id=update.message.chat_id, text=update.message.text)
     
 def unknown(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="Sorry, I didn't understand that command.")
