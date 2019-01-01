@@ -79,6 +79,8 @@ def about(bot, update):
 def parse(bot, update):
     msg = update.message.text
     msg_list = msg.split(" ")
+    if msg_list[0].lower() == "/menu":
+        del msg_list[0]
     dining = UCSCDining()
     if dining.verify_name(msg_list[0]):
         college_name = dining.get_college_name(msg_list[0])
@@ -86,6 +88,7 @@ def parse(bot, update):
         text = get_menu(dining, college_name, meal=meal_name)
         bot.send_message(chat_id=update.message.chat_id, text=text)
     else:
+        print(msg)
         bot.send_message(chat_id=update.message.chat_id, text="Sorry, I don't know what college that is!")
     
 def unknown(bot, update):
@@ -103,6 +106,9 @@ dispatcher.add_handler(help_handler)
 
 about_handler = CommandHandler('about', about)
 dispatcher.add_handler(about_handler)
+
+menu_handler = CommandHandler('menu', parse)
+dispatcher.add_handler(menu_handler)
 
 parse_handler = MessageHandler(Filters.text, parse)
 dispatcher.add_handler(parse_handler)
