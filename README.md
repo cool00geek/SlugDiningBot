@@ -8,4 +8,4 @@ To run the bot, set an environment variable: `TELEGRAM_UCSC_KEY` containing the 
 
 To run the command line app, run `UCSCDining.py`
 
-You can interact with my telegram bot at t.me/UCSCDining_bot when the server is running
+You can interact with my telegram bot at [t.me/UCSCDining_bot](t.me/UCSCDining_bot) when the server is running
