@@ -3,3 +3,5 @@ python_telegram_bot==11.1.0
 beautifulsoup4==4.7.0
 discord.py==0.16.12
 lxml==4.2.5
+pymessenger==0.0.7.0
+flask==1.0.2

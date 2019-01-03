@@ -2,10 +2,38 @@
 
 A Simple webscraper to get the UCSC dining hall menus
 
-Also has a Telegram bot!
+## Bot - Telegram
 
-To run the bot, set an environment variable: `TELEGRAM_UCSC_KEY` containing the key and run `bot.py`
+[Use me on Telegram!](t.me/UCSCDining_bot)
 
-To run the command line app, run `UCSCDining.py`
+### Usage - Group chat with Bot
 
-You can interact with my telegram bot at [t.me/UCSCDining_bot](t.me/UCSCDining_bot) when the server is running
+To view the current menu for any desired college, type `/menu [college]`
+
+To view the menu for a different meal, type `/menu [college] [meal]`
+
+For more information, type `/help`
+
+To view some information about me and the bot, type `/about`
+
+### Usage - Private message with Bot
+
+You can use all commands as described in the group chat section.
+
+In addition, you can also simply type the college name to see the menu for the current meal: `[college]`
+
+To see the menu for a different meal, you can type `[college] [meal]`
+
+## Bot - Discord
+
+[Add me to your Discord server!](https://discordapp.com/oauth2/authorize?client_id=530255285038612481&scope=bot)
+
+### Usage
+
+To view the current menu for any desired college, type `!menu [college]`
+
+To view the menu for a different meal, type `!menu [college] [meal]`
+
+For more information, type `!help`
+
+To view some information about me and the bot, type `!about`
