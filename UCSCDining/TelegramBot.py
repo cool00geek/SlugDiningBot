@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
 import os
@@ -5,9 +7,8 @@ from UCSCDining import UCSCDining
 import DiningBot
 
 
-
 def start(bot, update):
-    help_text = DiningBot.help()
+    help_text = DiningBot.help(prefix="/")
     bot.send_message(chat_id=update.message.chat_id, text=help_text)
     
 def about(bot, update):
@@ -26,7 +27,7 @@ def parse(bot, update):
         text = DiningBot.get_menu(dining, college_name, meal=meal_name)
         bot.send_message(chat_id=update.message.chat_id, text=text)
     else:
-        print(msg)
+        print("TG-err: " + msg)
         bot.send_message(chat_id=update.message.chat_id, text="Sorry, I don't know what college that is!")
     
 def unknown(bot, update):

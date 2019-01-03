@@ -63,10 +63,10 @@ def get_menu(dining, college_name, meal=""):
     
 def help(platform="Telegram", prefix=""):
     help_text = "Welcome to the UCSC Dining hall "  + platform + " bot!"
-    help_text += "\nSend any college name to see what they are currently serving"
-    help_text += "\n\tFor example, \"" + prefix + "c10\" or \"" + prefix + "rcc\""
+    help_text += "\nSend any college name, preceded by \"" + prefix+"menu\" to see what they are currently serving"
+    help_text += "\n\tFor example, \"" + prefix + "menu c10\" or \"" + prefix + "menu rcc\""
     help_text += "\n\nYou can also specify the meal to look into"
-    help_text += "\n\tFor example, \"" + prefix + "c9 dinner\" or \"cowell breakfast\""
+    help_text += "\n\tFor example, \"" + prefix + "menu c9 dinner\" or \"" + prefix + "menu cowell breakfast\""
     return help_text
     
 def about(platform="Telegram"):
