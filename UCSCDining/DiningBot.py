@@ -1,8 +1,7 @@
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from bs4 import BeautifulSoup
 import datetime
-import logging
 import os
+import requests
+from bs4 import BeautifulSoup
 from UCSCDining import UCSCDining
 
 def get_menu(dining, college_name, meal=""):
@@ -14,7 +13,7 @@ def get_menu(dining, college_name, meal=""):
         if os.path.exists(dining.get_path() + dining.get_filename(college_name, date)):
             input_source = open(dining.get_path() + dining.get_filename(college_name, date), 'r')
         else:
-            url = dining.get_url(college, date)
+            url = dining.get_url(college_name, date)
             input_source = requests.get(url).text
             dining.cache(dining.get_filename(college_name, date), input_source)
             
@@ -61,64 +60,17 @@ def get_menu(dining, college_name, meal=""):
         print("Invalid URL or college")
         print(e)
         return "Sorry, I'm having some trouble processing that"
-
-def start(bot, update):
-    help_text = "Welcome to the UCSC Dining hall Telegram bot!"
-    help_text += "\nSend any college name to see what they are currently serving"
-    help_text += "\n\tFor example, \"c10\" or \"rcc\""
-    help_text += "\n\nYou can also specify the meal to look into"
-    help_text += '\n\tFor example, \"c9 dinner\" or \"cowell breakfast\"'
-    bot.send_message(chat_id=update.message.chat_id, text=help_text)
     
-def about(bot, update):
-    text = "Thanks for using the UCSC Dining hall Telegram bot!"
+def help(platform="Telegram", prefix=""):
+    help_text = "Welcome to the UCSC Dining hall "  + platform + " bot!"
+    help_text += "\nSend any college name to see what they are currently serving"
+    help_text += "\n\tFor example, \"" + prefix + "c10\" or \"" + prefix + "rcc\""
+    help_text += "\n\nYou can also specify the meal to look into"
+    help_text += "\n\tFor example, \"" + prefix + "c9 dinner\" or \"cowell breakfast\""
+    return help_text
+    
+def about(platform="Telegram"):
+    text = "Thanks for using the UCSC Dining hall " + platform + " bot!"
     text += "\nThis was created by Vinay (https://github.com/cool00geek/)"
     text += "\nFor more information, contact him at vvenkat3@ucsc.edu"
-    bot.send_message(chat_id=update.message.chat_id, text=text)
-    
-def parse(bot, update):
-    msg = update.message.text
-    msg_list = msg.split(" ")
-    if msg_list[0].lower() == "/menu":
-        del msg_list[0]
-    dining = UCSCDining()
-    if dining.verify_name(msg_list[0]):
-        college_name = dining.get_college_name(msg_list[0])
-        meal_name = msg_list[len(msg_list)-1]
-        text = get_menu(dining, college_name, meal=meal_name)
-        bot.send_message(chat_id=update.message.chat_id, text=text)
-    else:
-        print(msg)
-        bot.send_message(chat_id=update.message.chat_id, text="Sorry, I don't know what college that is!")
-    
-def unknown(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="Sorry, I didn't understand that command.")
-
-
-updater = Updater(token=os.environ.get('TELEGRAM_UCSC_KEY'))
-dispatcher = updater.dispatcher
-
-start_handler = CommandHandler('start', start)
-dispatcher.add_handler(start_handler)
-
-help_handler = CommandHandler('help', start)
-dispatcher.add_handler(help_handler)
-
-about_handler = CommandHandler('about', about)
-dispatcher.add_handler(about_handler)
-
-menu_handler = CommandHandler('menu', parse)
-dispatcher.add_handler(menu_handler)
-
-parse_handler = MessageHandler(Filters.text, parse)
-dispatcher.add_handler(parse_handler)
-
-unknown_handler = MessageHandler(Filters.command, unknown)
-dispatcher.add_handler(unknown_handler)
-
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                     level=logging.INFO)
-
-
-updater.start_polling()
-updater.idle()
+    return text
