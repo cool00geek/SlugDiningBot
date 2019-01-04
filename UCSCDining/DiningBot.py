@@ -38,10 +38,10 @@ def get_menu(dining, college_name, meal=""):
 
                 if x == meal_id:
                     if len(menu) == 0:
-                        text +="\nNot serving anything!"
+                        text +="\nDining Hall Closed!"
                     else:
                         if meal_name == "Late":
-                            meal_name = "Late night"
+                            meal_name = "Late Night"
                         text += "\n"+meal_name + " has " + str(len(menu)) + " dishes"
                         for x in menu:
                             text += "\n" + x
@@ -51,7 +51,7 @@ def get_menu(dining, college_name, meal=""):
             except Exception as e:
                 # No more meals
                 print(e)
-                text +="\nNot serving anything!"
+                text +="\nDining Hall Closed!"
                 break
 
         return text

@@ -44,14 +44,14 @@ def receive_message():
                 recipient_id = message['sender']['id']
                 if message['message'].get('text'):
                     incoming = message['message'].get('text')
-                        if message.content.startswith('/start') or message.content.startswith('/help'):
-                            msg = DiningBot.help(platform="Messenger", prefix="/")
-                        elif message.content.startswith('/about'):
-                            msg = DiningBot.about(platform="Messenger")
-                        elif message.content.startswith('/menu'):
-                            msg = parse(message.content)
-                        elif message.content.startswith('/'):
-                            msg = "I don't understand that command!"
+                    if incoming.startswith('/start') or incoming.startswith('/help'):
+                        msg = DiningBot.help(platform="Messenger", prefix="/")
+                    elif incoming.startswith('/about'):
+                        msg = DiningBot.about(platform="Messenger")
+                    elif incoming.startswith('/menu'):
+                        msg = parse(message.content)
+                    elif incoming.startswith('/'):
+                        msg = "I don't understand that command!"
                     response_sent_text = get_message()
                     send_message(recipient_id, msg)
     return "Message Processed"
