@@ -7,4 +7,4 @@ github_username: cool00geek
 header_pages:
   - index.md
 
-theme: cayman
+theme: minima
