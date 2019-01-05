@@ -1,6 +1,10 @@
 title: UCSC Slug Dining Chat Bot
+author: Vinay Venkat
+email: vvenkat3@ucsc.edu
 description: A bot to see the food items currently being served at the UCSC dining halls from your favorite communication platforms!
-remote_theme: "mmistakes/minimal-mistakes@4.14.2"
+github_username: cool00geek
 
-plugins:
-  - jekyll-include-cache
+header_pages:
+  - index.md
+
+theme: cayman
