@@ -1,6 +1,10 @@
-# Dining Hall Scraper
+---
+layout: default
+---
 
-A Simple webscraper to get the UCSC dining hall menus
+# Slug Dining Bot
+
+A bot to see the food items currently being served at the UCSC dining halls from your favorite communication platforms!
 
 ## Bot - Telegram
 
