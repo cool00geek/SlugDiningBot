@@ -1,6 +1,10 @@
 ---
-layout: home
+layout: default
 ---
+
+# UCSC Slug Dining Bot
+
+A bot to see the food items currently being served at the UCSC dining halls from your favorite communication platforms!
 
 # Getting Started
 

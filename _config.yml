@@ -3,8 +3,9 @@ author: Vinay Venkat
 email: vvenkat3@ucsc.edu
 description: A bot to see the food items currently being served at the UCSC dining halls from your favorite communication platforms!
 github_username: cool00geek
+telegram_username: cool00geek
 
 header_pages:
-  - index.md
+  - about.md
 
 theme: minima
