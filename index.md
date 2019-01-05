@@ -4,8 +4,8 @@ layout: default
 
 # Getting Started
 
+[Join the Discord server!](https://discord.gg/fxtNHYh)  
 [Add me to your Discord server!](https://discordapp.com/oauth2/authorize?client_id=530255285038612481&scope=bot)  
-Message me on Discord: SlugDiningBot#3549  
 [Message me on Telegram!](t.me/UCSCDining_bot)  
 Message me on Facebook: COMING SOON  
 Send me a Text Message: COMING SOON  
@@ -14,9 +14,9 @@ Send me a Text Message: COMING SOON
 
 # Basic Usage
 
-- [Discord](#discod)
-- [Telegram - Group Chat](https://github.com/cool00geek/UCSCDiningScraper#usage---group-chat-with-bot)
-- [Telegram - Direct Message](https://github.com/cool00geek/UCSCDiningScraper#usage---private-message-with-bot)
+- [Discord](#discord)
+- [Telegram - Group Chat](#usage---group-chat-with-bot)
+- [Telegram - Direct Message](#usage---private-message-with-bot)
 
 ## Discord
 
