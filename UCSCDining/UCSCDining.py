@@ -95,7 +95,7 @@ class UCSCDining:
         hour = now.hour
         day = now.weekday()
         if  0 <= day <= 4 :
-            if 20 <= hour < 23:
+            if 20 <= hour < 24:
                 return 3
             if 14 <= hour < 20:
                 return 2
@@ -276,6 +276,12 @@ def main(infile="", college="", datestr="", nocache=False, meal="", all_meals=Fa
         try:
             # Get the parsed menu based on the starting index
             meal_name, menu = dining.parse_menu(soup, startIndex)
+            if x==0 and meal_name == "Lunch":
+                desired_meal -= 1
+            elif x==0 and meal_name == "Dinner":
+                desired_meal -= 2
+            elif x==0 and meal_name == "Late":
+                desired_meal -= 3
             
             # Print a seperator before the menu if it isn't our first time
 

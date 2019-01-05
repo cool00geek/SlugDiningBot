@@ -34,6 +34,14 @@ def get_menu(dining, college_name, meal=""):
                 # Get the parsed menu based on the starting index
                 meal_name, menu = dining.parse_menu(soup, startIndex)
                 
+                meal_name, menu = dining.parse_menu(soup, startIndex)
+                if x==0 and meal_name == "Lunch":
+                    desired_meal -= 1
+                elif x==0 and meal_name == "Dinner":
+                    desired_meal -= 2
+                elif x==0 and meal_name == "Late":
+                    desired_meal -= 3
+                
                 # Print a seperator before the menu if it isn't our first time
 
                 if x == meal_id:
