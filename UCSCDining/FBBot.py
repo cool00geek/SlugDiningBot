@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 
 from pymessenger.bot import Bot
+from flask import Flask, request
+from waitress import serve
 import os
 from UCSCDining import UCSCDining
 import DiningBot
 
 app = Flask(__name__)
-ACCESS_TOKEN = 'ACCESS_TOKEN'
-VERIFY_TOKEN = 'VERIFY_TOKEN'
+ACCESS_TOKEN = os.environ.get('FB_ACCESS_TOKEN')
+VERIFY_TOKEN = os.environ.get('FB_VERIFY_TOKEN')
 bot = Bot(ACCESS_TOKEN)
 
 def parse(msg):
@@ -71,4 +73,5 @@ def send_message(recipient_id, response):
     return "success"
 
 if __name__ == "__main__":
-    app.run()
+    serve(app, host='127.0.0.1', port=8080)
+    #app.run()
