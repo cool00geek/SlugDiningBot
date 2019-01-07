@@ -31,12 +31,12 @@ we can work things out. Thank you!
 <br>
 ![Monero](images/monero.png) &nbsp; 4AR3VWb9MhEJRn2e3aBCkT9DdrTKCKNE6hPLFWVEF8DnP3nyhxzRtZQhbWiXaWQRuC31UxNW2rM9vhfUJEXtfMJrHTWMiCR -->
 
-#### Cryptocurrency
+### Cryptocurrency
 
-|               | Service       | Wallet Address  |
-| :------------ |:--------------| ---------------:|
-| ![Bitcoin](https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png) | Bitcoin | `37U96yZQYqx6mCRDReGr3ecKmQAdhycuTG` |
-| ![Bitcoin Cash](images/bitcoin-cash.png) | Bitcoin Cash | `bitcoincash:qza8ld4d6vmnq4e69qv8lt7n7ccvn752wu8fxv98ne` |
-| ![Ethereum](images/ethereum.png) | Ethereum | `0xff655d87148fe5e99b1d33b567abecbebc47fce9` |
-| ![Litecoin](images/litecoin.png) | Litecoin | `MGtSRUr54emLMX4SYnskFpytyMm7yLawn9` |
-| ![Monero](images/monero.png) | Monero | `4AR3VWb9MhEJRn2e3aBCkT9DdrTKCKNE6hPLFWVEF8DnP3nyhxzRtZQhbWiXaWQRuC31UxNW2rM9vhfUJEXtfMJrHTWMiCR` |
+| Service       | Wallet Address  |
+|:--------------| ---------------:|
+| Bitcoin | `37U96yZQYqx6mCRDReGr3ecKmQAdhycuTG` |
+| Bitcoin Cash | `bitcoincash:qza8ld4d6vmnq4e69qv8lt7n7ccvn752wu8fxv98ne` |
+| Ethereum | `0xff655d87148fe5e99b1d33b567abecbebc47fce9` |
+| Litecoin | `MGtSRUr54emLMX4SYnskFpytyMm7yLawn9` |
+| Monero | `4AR3VWb9MhEJRn2e3aBCkT9DdrTKCKNE6hPLFWVEF8DnP3nyhxzRtZQhbWiXaWQRuC31UxNW2rM9vhfUJEXtfMJrHTWMiCR` |
