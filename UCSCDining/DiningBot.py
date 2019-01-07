@@ -79,7 +79,8 @@ def help(platform="Telegram", prefix=""):
     
 def about(platform="Telegram"):
     text = "Thanks for using the UCSC Dining hall " + platform + " bot!"
-    text += "\nFor some information about the advanced usage, checkout https://github.com/cool00geek/UCSCDiningScraper"
+    text += "\nFor some information about the advanced usage, checkout https://cool00geek.github.io/SlugDiningBot/"
     text += "\nThis was created by Vinay (https://github.com/cool00geek/)"
     text += "\nFor more information, contact him at vvenkat3@ucsc.edu"
+    text += "\n\nIf you really enjoy using this bot, consider making a donation! https://cool00geek.github.io/UCSCDiningScraper/about.html"
     return text
