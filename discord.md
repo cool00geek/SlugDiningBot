@@ -13,7 +13,6 @@ layout: default
 - Help: `!help`
 - About: `!about`
 
-
 ## Official Server widget
 
 <iframe src="https://discordapp.com/widget?id=530255198602526750&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
