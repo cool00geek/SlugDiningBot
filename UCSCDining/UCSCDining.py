@@ -13,7 +13,7 @@ cowell_names = ['cowell', 'cowell college', 'stevenson', 'stevenson college', 'c
 crown_names = ['crown', 'crown college', 'merrill', 'merrill college', 'crown merrill']
 porter_names = ['porter', 'porter college', 'kresge', 'kresge college', 'porter kresge']
 rcc_names = ['rcc', 'rachel carson', 'rachel carson college', 'oakes', 'oakes college', 'rachel']
-c9_names = ["c9", '9', 'c10', '10', 'college 9', 'college 10', 'college9', 'college10']
+c9_names = ["c9", '9', 'c10', '10', 'college 9', 'college 10', 'college9', 'college10', 'college']
 
 
 class UCSCDining:
