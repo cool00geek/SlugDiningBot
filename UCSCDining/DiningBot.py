@@ -82,5 +82,5 @@ def about(platform="Telegram"):
     text += "\nFor some information about the advanced usage, checkout https://cool00geek.github.io/SlugDiningBot/"
     text += "\nThis was created by Vinay (https://github.com/cool00geek/)"
     text += "\nFor more information, contact him at vvenkat3@ucsc.edu"
-    text += "\n\nIf you really enjoy using this bot, consider making a donation! https://cool00geek.github.io/UCSCDiningScraper/about.html"
+    text += "\n\nIf you really enjoy using this bot, consider making a donation! https://cool00geek.github.io/SlugDiningBot/about.html"
     return text
