@@ -6,6 +6,7 @@ github_username: cool00geek
 telegram_username: cool00geek
 
 header_pages:
+  - screenshots.md
   - about.md
 
 theme: minima
