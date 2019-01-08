@@ -8,14 +8,17 @@ import DiningBot
 
 
 def start(bot, update):
+    DiningBot.store_from(update.message.from_user, "telegram_users.txt")
     help_text = DiningBot.help(prefix="/")
     bot.send_message(chat_id=update.message.chat_id, text=help_text)
     
 def about(bot, update):
+    DiningBot.store_from(update.message.from_user, "telegram_users.txt")
     text = DiningBot.about()
     bot.send_message(chat_id=update.message.chat_id, text=text)
     
 def parse(bot, update):
+    DiningBot.store_from(update.message.from_user, "telegram_users.txt")
     msg = update.message.text
     msg_list = msg.split(" ")
     if msg_list[0].lower() == "/menu":
@@ -31,6 +34,7 @@ def parse(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="Sorry, I don't know what college that is!")
     
 def unknown(bot, update):
+    DiningBot.store_from(update.message.from_user, "telegram_users.txt")
     bot.send_message(chat_id=update.message.chat_id, text="Sorry, I didn't understand that command.")
 
 

@@ -18,6 +18,7 @@ def receive_sms():
 
     # Print the message
     print('Message received - From: ' + from_number + ', To: ' + to_number + ', Text: ' + text)
+    DiningBot.store_from(from_number, 'sms_users.txt')
 
     if text.lower().startswith('start') or text.lower().startswith('help'):
         print("We are starting now")

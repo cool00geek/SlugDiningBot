@@ -13,6 +13,9 @@ client = discord.Client()
 
 @client.event
 async def on_message(message):
+    
+    DiningBot.store_from(message.author, 'discord_users.txt')
+    
     # we do not want the bot to reply to itself
     if message.author == client.user:
         return

@@ -99,3 +99,9 @@ def parse(msg, platform="GEN", prefix=""):
         #text="Sorry, I don't know what college that is!"
         return None
     return text
+
+def store_from(text, filename):
+    dining = UCSCDining()
+    f = open(dining.get_path() + filename, 'a+')
+    f.write(text)
+    f.close()

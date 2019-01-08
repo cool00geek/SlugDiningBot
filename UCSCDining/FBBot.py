@@ -45,6 +45,7 @@ def receive_message():
                 #Facebook Messenger ID for user so we know where to send response back to
                 recipient_id = message['sender']['id']
                 if message['message'].get('text'):
+                    DiningBot.store_from(recipient_id,"fb_users.txt")
                     incoming = message['message'].get('text')
                     if incoming.startswith('/start') or incoming.startswith('/help'):
                         msg = DiningBot.help(platform="Messenger", prefix="/")
