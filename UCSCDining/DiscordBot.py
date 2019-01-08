@@ -27,7 +27,7 @@ async def on_message(message):
         msg = DiningBot.about(platform="Discord")
         await client.send_message(message.channel, msg)
     elif message.content.startswith('!menu'):
-        msg = DiningBot.parse(message.content, platform="TG", prefix="!")
+        msg = DiningBot.parse(message.content, platform="DC", prefix="!")
         await client.send_message(message.channel, msg)
     elif message.content.startswith('!'):
         msg = "I don't understand that command!"
