@@ -25,7 +25,7 @@ If the service does not provide sending a message, such as cryptocurrency, pleas
 - View menu for a specific meal: `menu [college name] [meal]`
   - Example: View menu for College 9/10 dinner: `menu c9 dinner`
   - Example: View menu for Rachel Carson lunch: `menu rcc lunch` or `!menu rachel carson lunch`
-- Help: `info`
+- Help: `help` or `howto`
 - About: `about`
 
 ## Notice about SMS
