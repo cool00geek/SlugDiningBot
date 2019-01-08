@@ -1,7 +1,9 @@
 import plivo
 from flask import Flask, request, Response
+from waitress import serve
 import requests
 import DiningBot
+import os
 
 app = Flask(__name__)
 
@@ -17,7 +19,6 @@ def receive_sms():
     # Print the message
     print('Message received - From: ' + from_number + ', To: ' + to_number + ', Text: ' + text)
 
-    dining = UCSCDining()
     if text.lower().startswith('start') or text.lower().startswith('help'):
         print("We are starting now")
         msg = DiningBot.help(platform="SMS", prefix="")
@@ -40,8 +41,8 @@ def receive_sms():
 
     data = '{"src": "' + to_number + '","dst": "' + from_number + '","text": "'+ msg + '"}'
 
-    auth_id = 'MAMTQXYZMYMDNMZGIZNJ'
-    auth_token = 'ZTk4NGNkN2NhMTI3ODFjNzI2N2NmN2VhZDhmMGY0'
+    auth_id = os.environ.get("PLIVO_AUTH")
+    auth_token = os.environ.get("PLIVO_TOKEN")
 
     url = 'https://api.plivo.com/v1/Account/' + auth_id + '/Message/'
     response = requests.post(url, headers=headers, data=data, auth=(auth_id, auth_token))
@@ -49,4 +50,5 @@ def receive_sms():
     return "Message sent", 200
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=57920)
+    serve(app, host='0.0.0.0', port=57920)
+    #app.run(host='0.0.0.0', port=57920)
