@@ -93,8 +93,9 @@ def parse(msg, platform="GEN", prefix=""):
     if dining.verify_name(msg_list[0]):
         college_name = dining.get_college_name(msg_list[0])
         meal_name = msg_list[len(msg_list)-1]
-        text = DiningBot.get_menu(dining, college_name, meal=meal_name)
+        text = get_menu(dining, college_name, meal=meal_name)
     else:
         print(platform + "-err: " + msg)
-        text="Sorry, I don't know what college that is!"
+        #text="Sorry, I don't know what college that is!"
+        return None
     return text
