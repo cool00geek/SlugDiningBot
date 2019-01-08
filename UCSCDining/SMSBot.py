@@ -20,8 +20,7 @@ def receive_sms():
     print('Message received - From: ' + from_number + ', To: ' + to_number + ', Text: ' + text)
     DiningBot.store_from(from_number, 'sms_users.txt')
 
-    if text.lower().startswith('start') or text.lower().startswith('help'):
-        print("We are starting now")
+    if text.lower().startswith('howto') or text.lower().startswith('help'):
         msg = DiningBot.help(platform="SMS", prefix="")
     elif text.lower().startswith('about'):
         msg = DiningBot.about(platform="SMS")
