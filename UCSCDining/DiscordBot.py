@@ -9,19 +9,7 @@ token = os.environ.get('DISCORD_UCSC_KEY')
 
 client = discord.Client()
 
-def parse(msg):
-    msg_list = msg.split(" ")
-    if msg_list[0].lower() == "!menu":
-        del msg_list[0]
-    dining = UCSCDining()
-    if dining.verify_name(msg_list[0]):
-        college_name = dining.get_college_name(msg_list[0])
-        meal_name = msg_list[len(msg_list)-1]
-        text = DiningBot.get_menu(dining, college_name, meal=meal_name)
-    else:
-        print("DC-err: " + msg)
-        text="Sorry, I don't know what college that is!"
-    return text
+
 
 @client.event
 async def on_message(message):
@@ -39,7 +27,7 @@ async def on_message(message):
         msg = DiningBot.about(platform="Discord")
         await client.send_message(message.channel, msg)
     elif message.content.startswith('!menu'):
-        msg = parse(message.content)
+        msg = DiningBot.parse(message.content, platform="TG", prefix="!")
         await client.send_message(message.channel, msg)
     elif message.content.startswith('!'):
         msg = "I don't understand that command!"
