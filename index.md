@@ -11,7 +11,7 @@ A bot to see the food items currently being served at the UCSC dining halls from
 [Message me on Discord!](discord-instructions)  
 <!--[Join the Discord server!](https://discord.gg/fxtNHYh)  -->
 <!--[Add me to your Discord server!](https://discordapp.com/oauth2/authorize?client_id=530255285038612481&scope=bot)  -->
-[Message me on Telegram!](t.me/UCSCDining_bot)  
+[Message me on Telegram!](https://t.me/UCSCDining_bot)  
 Message me on Facebook: COMING SOON  
 Send me a Text Message: COMING SOON  
 

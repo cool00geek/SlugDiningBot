@@ -12,7 +12,7 @@ There are 3 ways to interact with the bot on Discord:
 
 ## Existing server
 
-Simply join any server the bot is a part of. For example, you can join the official SlugDiningBot Discord server [here - https://discord.gg/fxtNHYh](https://discord.gg/fxtNHYh) and interact on the #general channel. All commands explained on the [discord](discord) page will work.
+Simply join any server the bot is a part of. For example, you can join the official SlugDiningBot Discord server [here - https://discord.gg/nYJeFCP](https://discord.gg/nYJeFCP) and interact on the #general channel. All commands explained on the [discord](discord) page will work.
 
 ## Your Own Server
 
@@ -20,4 +20,4 @@ Add the bot to any server you are an administrator of, and can then setup permis
 
 ## By a Private Message
 
-First, join a discord server the bot is a part of. For example, the official SlugDiningBot server ([https://discord.gg/fxtNHYh](https://discord.gg/fxtNHYh)). Go to the #announcements channel, click on the SlugDiningBot user, then message the bot `!help` to initiate a private message. You can leave the official server if you wish at this point.
+First, join a discord server the bot is a part of. For example, the official SlugDiningBot server ([https://discord.gg/nYJeFCP](https://discord.gg/nYJeFCP)). Go to the #announcements channel, click on the SlugDiningBot user, then message the bot `!help` to initiate a private message. You can leave the official server if you wish at this point.
