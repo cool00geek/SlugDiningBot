@@ -6,18 +6,23 @@ import os
 from UCSCDining import UCSCDining
 import DiningBot
 
+def print_msg(update):
+    print(update.message.from_user.username + " sent message: " + update.message.text)
 
 def start(bot, update):
+    print_msg(update)
     DiningBot.store_from(str(update.message.from_user.username), "telegram_users.txt")
     help_text = DiningBot.help(prefix="/")
     bot.send_message(chat_id=update.message.chat_id, text=help_text)
     
 def about(bot, update):
+    print_msg(update)
     DiningBot.store_from(str(update.message.from_user.username), "telegram_users.txt")
     text = DiningBot.about()
     bot.send_message(chat_id=update.message.chat_id, text=text)
     
 def parse(bot, update):
+    print_msg(update)
     DiningBot.store_from(str(update.message.from_user.username), "telegram_users.txt")
     msg = update.message.text
     msg_list = msg.split(" ")
@@ -34,6 +39,7 @@ def parse(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="Sorry, I don't know what college that is!")
     
 def unknown(bot, update):
+    print_msg(update)
     DiningBot.store_from(str(update.message.from_user.username), "telegram_users.txt")
     bot.send_message(chat_id=update.message.chat_id, text="Sorry, I didn't understand that command.")
 

@@ -17,6 +17,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
+    print(str(message.author) + " sent message: " + str(message.content))
     DiningBot.store_from(str(message.author), 'discord_users.txt')
 
     if message.content.startswith('!hello'):

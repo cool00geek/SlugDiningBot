@@ -99,13 +99,13 @@ class UCSCDining:
                 return 3
             if 14 <= hour < 20:
                 return 2
-            if 12 <= hour < 2:
+            if 12 <= hour < 14:
                 return 1
             if 11 == hour and minu >= 30:
                 return 1
             return 0
         else:
-            if 20 <= hour < 23:
+            if 20 <= hour < 24:
                 return 3
             if 14 <= hour < 20:
                 return 2

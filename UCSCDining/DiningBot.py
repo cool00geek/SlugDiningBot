@@ -21,13 +21,12 @@ def get_menu(dining, college_name, meal=""):
         startIndex = 2
         text = college_name
         
-        if meal:
+        if not meal=="":
             meal_id = dining.get_desired_meal(meal)
             if meal_id == -1:
                 meal_id = dining.get_current_meal()
         else:
             meal_id = dining.get_current_meal()
-            
 
         for x in range (0,4):
             try:
