@@ -18,7 +18,7 @@ echo -n "Queries:       "
 cat "$path""telegram_users.txt" | wc -l
 echo -n "Unique users:  "
 cat "$path""telegram_users.txt" | sort | uniq | wc -l
-cat "$path""telegram_users.txt" | sort | uniq -c
+cat "$path""telegram_users.txt" | sort | uniq -c | sort -r
 echo ""
 
 echo "################"
@@ -29,7 +29,7 @@ echo -n "Queries:       "
 cat "$path""discord_users.txt" | wc -l
 echo -n "Unique users:  "
 cat "$path""discord_users.txt" | sort | uniq | wc -l
-cat "$path""discord_users.txt" | sort | uniq -c
+cat "$path""discord_users.txt" | sort | uniq -c | sort -r
 echo ""
 
 echo "################"
@@ -40,4 +40,4 @@ echo -n "Queries:       "
 cat "$path""sms_users.txt" | wc -l
 echo -n "Unique users:  "
 cat "$path""sms_users.txt" | sort | uniq | wc -l
-cat "$path""sms_users.txt" | sort | uniq -c
+cat "$path""sms_users.txt" | sort | uniq -c | sort -r
