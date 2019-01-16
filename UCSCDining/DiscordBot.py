@@ -20,16 +20,16 @@ async def on_message(message):
     print(str(message.author) + " sent message: " + str(message.content))
     DiningBot.store_from(str(message.author), 'discord_users.txt')
 
-    if message.content.startswith('!hello'):
+    if message.content.lower().startswith('!hello'):
         msg = 'Hello {0.author.mention}'.format(message)
         await client.send_message(message.channel, msg)
-    elif message.content.startswith('!start') or message.content.startswith('!help'):
+    elif message.content.lower().startswith('!start') or message.content.startswith('!help'):
         msg = DiningBot.help(platform="Discord", prefix="!")
         await client.send_message(message.channel, msg)
-    elif message.content.startswith('!about'):
+    elif message.content.lower().startswith('!about'):
         msg = DiningBot.about(platform="Discord")
         await client.send_message(message.channel, msg)
-    elif message.content.startswith('!menu'):
+    elif message.content.lower().startswith('!menu'):
         msg = DiningBot.parse(message.content, platform="DC", prefix="!")
         if not msg:
             await client.send_message(message.channel, "I'm not sure what college that is!")
@@ -37,6 +37,9 @@ async def on_message(message):
             await client.send_message(message.channel, msg)
     elif message.content.startswith('!'):
         msg = "I don't understand that command!"
+        await client.send_message(message.channel, msg)
+    elif message.content.lower().startswith('hello there'):
+        msg = "General Kenobi"
         await client.send_message(message.channel, msg)
 
 @client.event

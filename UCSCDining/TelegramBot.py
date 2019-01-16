@@ -25,6 +25,9 @@ def parse(bot, update):
     print_msg(update)
     DiningBot.store_from(str(update.message.from_user.username), "telegram_users.txt")
     msg = update.message.text
+    if msg.lower() == "hello there":
+        bot.send_message(chat_id=update.message.chat_id, text="General Kenobi")
+        return
     msg_list = msg.split(" ")
     if msg_list[0].lower() == "/menu":
         del msg_list[0]
