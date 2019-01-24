@@ -16,9 +16,10 @@ async def on_message(message):
     # we do not want the bot to reply to itself
     if message.author == client.user:
         return
-
-    print(str(message.author) + " sent message: " + str(message.content))
-    DiningBot.store_from(str(message.author), 'discord_users.txt')
+    
+    if message.content.startswith('!'):
+        print(str(message.author) + " sent message: " + str(message.content))
+        DiningBot.store_from(str(message.author), 'discord_users.txt')
 
     if message.content.lower().startswith('!hello'):
         msg = 'Hello {0.author.mention}'.format(message)
