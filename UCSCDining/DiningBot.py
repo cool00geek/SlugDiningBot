@@ -161,8 +161,12 @@ def search(keyword, meal=""):
         to_return += porter
         pass
     if not rcc == "":
+        if not to_return == "":
+            to_return += "\n"
         to_return += rcc
         pass
+
+
     if not to_return == "":
         if not meal == "":
             to_return = meal + "\n" + to_return
