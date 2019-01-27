@@ -163,6 +163,9 @@ def search(keyword, meal=""):
     if not rcc == "":
         to_return += rcc
         pass
+    if not to_return == "":
+        if not meal == "":
+            to_return = meal + "\n" + to_return
     return to_return
 
 def store_from(text, filename):
