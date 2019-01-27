@@ -72,6 +72,9 @@ dispatcher = updater.dispatcher
 start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
 
+start_handler = CommandHandler('search', search)
+dispatcher.add_handler(start_handler)
+
 help_handler = CommandHandler('help', start)
 dispatcher.add_handler(help_handler)
 
