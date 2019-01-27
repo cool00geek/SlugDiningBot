@@ -36,6 +36,27 @@ async def on_message(message):
             await client.send_message(message.channel, "I'm not sure what college that is!")
         else:
             await client.send_message(message.channel, msg)
+    elif message.content.lower().startswith('!search'):
+        #msg = DiningBot.parse(message.content, platform="DC", prefix="!")
+        msg = message.content
+        msg_list = msg.split(" ")
+        del msg_list[0]
+        dining = UCSCDining()
+        meal = ""
+        meal_id = dining.get_desired_meal(msg_list[len(msg_list) - 1])
+        print(meal_id)
+        if not meal_id == -1:
+            meal = msg_list[len(msg_list) - 1]
+            del msg_list[len(msg_list) - 1]
+        msg_str = ""
+        for x in msg_list:
+            msg_str += x + " "
+        msg_str = msg_str[:-1]
+        send_msg = DiningBot.search(msg_str, meal=meal)
+        if send_msg == "":
+            send_msg = "That's not being served!"
+        #bot.send_message(chat_id=update.message.chat_id, text=)
+        await client.send_message(message.channel, send_msg)
     #elif message.content.startswith('!'):
     #    msg = "I don't understand that command!"
     #    await client.send_message(message.channel, msg)
