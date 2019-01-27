@@ -10,6 +10,11 @@ layout: default
 - View menu for a specific meal: `!menu [college name] [meal]`
   - Example: View menu for College 9/10 dinner: `!menu c9 dinner`
   - Example: View menu for Rachel Carson lunch: `!menu rcc lunch` or `!menu rachel carson lunch`
+- Search for a dish in the current meal: `!search [item]`
+  - Example: Search for rice for the current meal: `!search rice`
+- Search for a dish and specify a meal: `!search [item] [meal]`
+  - Example: Search for rice for lunch: `!search rice lunch`
+  - Example: Search for waffles for breakfast: `!search waffles breakfast`
 - Help: `!help`
 - About: `!about`
 
