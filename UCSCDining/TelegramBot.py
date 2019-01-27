@@ -59,7 +59,7 @@ def search(bot, update):
     for x in msg_list:
         msg_str += x + " "
     msg_str = msg_str[:-1]
-    bot.send_message(chat_id=update.message.chat_id, text=DiningBot.search(msg_str))
+    bot.send_message(chat_id=update.message.chat_id, text=DiningBot.search(msg_str, meal=meal))
     
 
 def unknown(bot, update):
