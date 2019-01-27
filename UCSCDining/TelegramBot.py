@@ -40,7 +40,26 @@ def parse(bot, update):
     else:
         print("TG-err: " + msg)
         bot.send_message(chat_id=update.message.chat_id, text="Sorry, I don't know what college that is!")
+
+def search(bot, update):
+    print_msg(update)
+    DiningBot.store_from(str(update.message.from_user.username), "telegram_users.txt")
+
+    msg = update.message.text
+    msg_list = msg.split(" ")
+    del msg_list[0]
+    dining = UCSCDining()
+    meal = ""
+    if not dining.get_desired_meal(msg_list[len(msg_list) - 1]) == -1:
+        meal = msg_list[len(msg_list) - 1]
+        del msg_list[len(msg_list) - 1]
+    msg_str = ""
+    for x in msg_list:
+        msg_str += x + " "
+    msg_str = msg_str[:-1]
+    bot.send_message(chat_id=update.message.chat_id, text=DiningBot.search(msg_str))
     
+
 def unknown(bot, update):
     print_msg(update)
     DiningBot.store_from(str(update.message.from_user.username), "telegram_users.txt")
