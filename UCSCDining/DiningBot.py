@@ -99,9 +99,79 @@ def parse(msg, platform="GEN", prefix=""):
         return None
     return text
 
+def find_items(menu_str, college, keyword):
+    to_return = ""
+    menu_list = menu_str.split("\n")
+    if len(menu_list) == 1:
+        return to_return
+    menu_list.pop(0)
+    menu_list.pop(0)
+    for item in menu_list:
+        if keyword.lower() in item.lower():
+            to_return += "\n" + item
+    if not to_return == "":
+        to_return = college + to_return
+    return to_return
+
+
+
+def search(keyword, meal=""):
+    dining = UCSCDining()
+    cowell = get_menu(dining,"cowell", meal)
+    crown = get_menu(dining, "crown", meal)
+    cn = get_menu(dining, "c9", meal)
+    porter = get_menu(dining, "porter", meal)
+    rcc = get_menu(dining, "rcc", meal)
+
+    if "Dining Hall Closed!" in cowell:
+        cowell = ""
+    if "Dining Hall Closed!" in crown:
+        crown = ""
+    if "Dining Hall Closed!" in cn:
+        cn = ""
+    if "Dining Hall Closed!" in porter:
+        porter = ""
+    if "Dining Hall Closed!" in rcc:
+        rcc = ""
+
+    cowell = find_items(cowell, "cowell", keyword)
+    crown = find_items(crown, "crown", keyword)
+    cn = find_items(cn, "c9", keyword)
+    porter = find_items(porter, "porter", keyword)
+    rcc = find_items(rcc, "rcc", keyword)
+
+    to_return = ""
+
+    if not cowell == "":
+        to_return += cowell
+        pass
+    if not crown == "":
+        if not to_return == "":
+            to_return += "\n"
+        to_return += crown
+        pass
+    if not cn == "":
+        if not to_return == "":
+            to_return += "\n"
+        to_return += cn
+        pass
+    if not porter == "":
+        if not to_return == "":
+            to_return += "\n"
+        to_return += porter
+        pass
+    if not rcc == "":
+        to_return += rcc
+        pass
+    return to_return
+
 def store_from(text, filename):
     dining = UCSCDining()
     f = open(dining.get_path() + filename, 'a+')
     f.write(text)
     f.write('\n')
     f.close()
+
+
+#if __name__ == '__main__':
+#    print(search("jambalaya", "lunch"))
