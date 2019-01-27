@@ -74,6 +74,7 @@ def help(platform="Telegram", prefix=""):
     help_text += "\n\tFor example, '" + prefix + "menu c10' or '" + prefix + "menu rcc'"
     help_text += "\n\nYou can also specify the meal to look into"
     help_text += "\n\tFor example, '" + prefix + "menu c9 dinner' or '" + prefix + "menu cowell breakfast'"
+    help_text += "\n\nFor additional information, check out https://cool00geek.github.io/SlugDiningBot/"
     return help_text
     
 def about(platform="Telegram"):
