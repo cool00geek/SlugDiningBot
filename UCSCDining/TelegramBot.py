@@ -29,7 +29,7 @@ def parse(bot, update):
         bot.send_message(chat_id=update.message.chat_id, text="General Kenobi")
         return
     msg_list = msg.split(" ")
-    if msg_list[0].lower() == "/menu":
+    if msg_list[0].lower() == "/menu" or msg_list[0].lower() == "menu":
         del msg_list[0]
     dining = UCSCDining()
     if dining.verify_name(msg_list[0]):

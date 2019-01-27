@@ -99,9 +99,23 @@ def parse(msg, platform="GEN", prefix=""):
         return None
     return text
 
+def search(keyword, meal=""):
+    dining = UCSCDining()
+    cowell = get_menu(dining,"cowell", meal)
+    crown = get_menu(dining, "crown", meal)
+    cn = get_menu(dining, "c9", meal)
+    porter = get_menu(dining, "porter", meal)
+    rcc = get_menu(dining, "rcc", meal)
+    #print(porter)
+
+
 def store_from(text, filename):
     dining = UCSCDining()
     f = open(dining.get_path() + filename, 'a+')
     f.write(text)
     f.write('\n')
     f.close()
+
+
+if __name__ == '__main__':
+    search("Hello")
