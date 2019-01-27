@@ -50,7 +50,9 @@ def search(bot, update):
     del msg_list[0]
     dining = UCSCDining()
     meal = ""
-    if not dining.get_desired_meal(msg_list[len(msg_list) - 1]) == -1:
+    meal_id = dining.get_desired_meal(msg_list[len(msg_list) - 1])
+    print(meal_id)
+    if not meal_id == -1:
         meal = msg_list[len(msg_list) - 1]
         del msg_list[len(msg_list) - 1]
     msg_str = ""
