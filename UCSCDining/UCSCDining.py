@@ -211,6 +211,16 @@ class UCSCDining:
         menu = open(cache_dir + filename, "w")
         menu.write(text)
         menu.close()
+        
+    def open_driver(self):
+        # 4 meals so do it 4 times
+        options = webdriver.ChromeOptions()
+        #options.add_argument('--headless')
+        with NoStdStreams():
+            #driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
+            driver = webdriver.PhantomJS(PhantomJsDriverManager().install())
+        driver.get("https://nutrition.sa.ucsc.edu/")
+        return driver
 
 
 def main(infile="", college="", datestr="", nocache=False, meal="", all_meals=False):
@@ -290,13 +300,7 @@ def main(infile="", college="", datestr="", nocache=False, meal="", all_meals=Fa
             desired_meal = meal_id
 
     if nocache or not (os.path.exists(dining.get_path() + dining.get_filename(college,date)) and os.path.isfile(dining.get_path() + dining.get_filename(college,date))):
-        # 4 meals so do it 4 times
-        options = webdriver.ChromeOptions()
-        #options.add_argument('--headless')
-        with NoStdStreams():
-            #driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
-            driver = webdriver.PhantomJS(PhantomJsDriverManager().install())
-        driver.get("https://nutrition.sa.ucsc.edu/")
+        driver = dining.open_driver()
         cache_text = ""
         for x in range (0,4):
             try:

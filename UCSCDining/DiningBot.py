@@ -17,49 +17,128 @@ def get_menu(dining, college_name, meal=""):
             input_source = requests.get(url).text
             dining.cache(dining.get_filename(college_name, date), input_source)
             
-        soup = BeautifulSoup(input_source, 'lxml')
-        startIndex = 2
         text = college_name
         
         if not meal=="":
-            meal_id = dining.get_desired_meal(meal)
-            if meal_id == -1:
-                meal_id = dining.get_current_meal()
+            desired_meal = dining.get_desired_meal(meal)
+            if desired_meal == -1:
+                desired_meal = dining.get_current_meal()
         else:
-            meal_id = dining.get_current_meal()
+            desired_meal = dining.get_current_meal()
 
-        for x in range (0,4):
-            try:
-                # Get the parsed menu based on the starting index
-                meal_name, menu = dining.parse_menu(soup, startIndex)
-                
-                meal_name, menu = dining.parse_menu(soup, startIndex)
-                if x==0 and meal_name == "Lunch":
-                    meal_id -= 1
-                elif x==0 and meal_name == "Dinner":
-                    meal_id -= 2
-                elif x==0 and meal_name == "Late":
-                    meal_id -= 3
-                
-                # Print a seperator before the menu if it isn't our first time
-
-                if x == meal_id:
+        if nocache or not (os.path.exists(dining.get_path() + dining.get_filename(college,date)) and os.path.isfile(dining.get_path() + dining.get_filename(college,date))):
+            driver = dining.open_driver()
+            cache_text = ""
+            for x in range (0,4):
+                try:
+                    # Get the parsed menu based on the starting index
+                    try:
+                        meal_name, menu = dining.parse_menu(driver, college, dining.get_url(college,date), x)
+                    except Exception as e: print(e)
+                    
+                    # Start saving the text to cache
+                    cache_text += meal_name + '\n'
+                    for i in menu:
+                        cache_text += i + '\n'
+                    cache_text += '\n'
+                    
+                    if x==0 and meal_name == "Lunch":
+                        desired_meal -= 1
+                    elif x==0 and meal_name == "Dinner":
+                        desired_meal -= 2
+                    elif x==0 and meal_name == "Late":
+                        desired_meal -= 3
+                    
+                    # Print a seperator before the menu if it isn't our first time
+                    if x == desired_meal:
+                        if len(menu) == 0:
+                            text +="\nDining Hall Closed!"
+                        else:
+                            if meal_name == "Late":
+                                meal_name = "Late Night"
+                            text += "\n"+meal_name + " has " + str(len(menu)) + " dishes"
+                            for x in menu:
+                                text += "\n" + x
+                        break
+                    # The next index has to add 3 and the length of the menu
+                    startIndex += len(menu) + 3
+                except:
+                    print(e)
+                    text +="\nDining Hall Closed!"
+                    break
+            driver.quit()
+            
+            # Cache it
+            if not infile:
+                if using_cache:
+                    pass
+                else:
+                    target_dt = dt.strptime(date, '%m/%d/%Y')
+                    target_day = target_dt.day
+                    today = target_dt.now().date()
+                    today_day = today.day
+                    if target_day < today_day or today_day + 7 < target_day:
+                        pass # Bad date
+                    else:
+                        dining.cache(dining.get_filename(college, date), cache_text)
+        else: # This is using the cache
+            with open(dining.get_path() + dining.get_filename(college,date), 'r') as cache_file:
+                meals = list()
+                meals.append(list())
+                meals.append(list())
+                meals.append(list())
+                meals.append(list())
+                current_list = 0
+                for line in cache_file:
+                    if "Breakfast" in line:
+                        current_list = 0
+                        continue
+                    elif "Lunch" in line:
+                        current_list = 1
+                        continue
+                    elif "Dinner" in line:
+                        current_list = 2
+                        continue
+                    elif "Late" in line:
+                        current_list = 3
+                        continue
+                    elif line == "":
+                        continue
+                    else:
+                        pass
+                    meals[current_list].append(line)
+                if desired_meal == 0:
                     if len(menu) == 0:
                         text +="\nDining Hall Closed!"
                     else:
-                        if meal_name == "Late":
-                            meal_name = "Late Night"
-                        text += "\n"+meal_name + " has " + str(len(menu)) + " dishes"
+                        text += "\nBreakfast has " + str(len(meals[0])) + " dishes"
                         for x in menu:
                             text += "\n" + x
                     break
-                # The next index has to add 3 and the length of the menu
-                startIndex += len(menu) + 3
-            except Exception as e:
-                # No more meals
-                print(e)
-                text +="\nDining Hall Closed!"
-                break
+                elif desired_meal == 1:
+                    if len(menu) == 0:
+                        text +="\nDining Hall Closed!"
+                    else:
+                        text += "\nLunch has " + str(len(meals[0])) + " dishes"
+                        for x in menu:
+                            text += "\n" + x
+                    break
+                elif desired_meal == 2:
+                    if len(menu) == 0:
+                        text +="\nDining Hall Closed!"
+                    else:
+                        text += "\nDinner has " + str(len(meals[0])) + " dishes"
+                        for x in menu:
+                            text += "\n" + x
+                    break
+                else:
+                    if len(menu) == 0:
+                        text +="\nDining Hall Closed!"
+                    else:
+                        text += "\nLate Night has " + str(len(meals[0])) + " dishes"
+                        for x in menu:
+                            text += "\n" + x
+                    break
 
         return text
 
