@@ -140,32 +140,6 @@ class UCSCDining:
         return url.format(num=self.get_dining_num(college), name=self.get_dining_hall_url(college), month=str(int(month)), day=str(int(date)), year=year)
     
     # Parse the menu
-    # This is broken after the upgrades made in summer 2019
-    def parse_menu_old(self, soup, start_index):
-        # Since the menu is in table form, get the tables
-        tables = soup.find_all('table')
-        
-        # Create a list for the actual text. There are a LOT of empty lines
-        menu = list()
-        for i in tables:
-            # If there is some text, add it to the menu
-            if i.text.strip() != "":
-                menu.append(i.text)
-
-        # Get the meal label (breakfast, lunch, etc)
-        meal_label = menu[start_index].strip().split(" ")[0].strip()
-
-        # Since there are still a bunch of other text we don't need, create a new list with just the meal items
-        meal_items = list()
-        # Split it by new line
-        for item in menu[start_index+1].split('\n'):
-            # And if it isn't empty, it's a dish, so add it
-            if item.strip() != '':
-                meal_items.append(item.strip())
-        
-        # Finally return the label and the list with all the items
-        return meal_label, meal_items
-    
     def parse_menu(self, driver, college, url, start_index):
         raw_college = college.lower()
         if college in cowell_names:
@@ -210,11 +184,14 @@ class UCSCDining:
         if meal == "Late":
             meal = "Late Night"
             
+        if len(menu) == 0:
+            return
         # Print the heading for the meal (The name and the number of dishes it has
         print(meal + ": " + str(len(menu)))
         # And print every dish in the menu
         for dish in menu:
-            print(dish)
+            if not dish.strip() == "":
+                print(dish.strip())
 
     def get_path(self):
         home = str(Path.home())
@@ -227,7 +204,7 @@ class UCSCDining:
         day = dt.strptime(date, '%m/%d/%Y')
         date = str(day.year) + "-" + str(day.month) + "-" + str(day.day)
         college_name = self.get_college_name(college)
-        return date + "_" + college_name + ".htm"
+        return date + "_" + college_name + ".txt"
 
     def cache(self, filename, text):
         cache_dir = self.get_path()
@@ -278,7 +255,7 @@ def main(infile="", college="", datestr="", nocache=False, meal="", all_meals=Fa
             print(e)
             print("Invalid URL, college, or date")
             exit(132)
-    # Case #3: College is specified (Assume today's date
+    # Case #3: College is specified (Assume today's date)
     elif college:
         try:
             if not dining.verify_name(college):
@@ -302,27 +279,7 @@ def main(infile="", college="", datestr="", nocache=False, meal="", all_meals=Fa
         print("Incorrect arguments! Please specify either a college or an input file! See help for more information")
         exit(131)
 
-    # Cache it
-    if not infile:
-        if using_cache:
-            pass
-        else:
-            target_dt = dt.strptime(date, '%m/%d/%Y')
-            target_day = target_dt.day
-            today = target_dt.now().date()
-            today_day = today.day
-            if target_day < today_day or today_day + 7 < target_day:
-                pass # Bad date
-            else:
-                dining.cache(dining.get_filename(college, date), input_source)
 
-    # Create the soup object, and parse it using lxml
-    soup = BeautifulSoup(input_source, 'lxml')
-
-    # Starting index has to be 2 for breakfast
-    startIndex = 2
-
-    
     desired_meal = dining.get_current_meal()
     if meal:
         meal_id = dining.get_desired_meal(meal)
@@ -332,44 +289,105 @@ def main(infile="", college="", datestr="", nocache=False, meal="", all_meals=Fa
         else:
             desired_meal = meal_id
 
-    # 4 meals so do it 4 times
-    options = webdriver.ChromeOptions()
-    #options.add_argument('--headless')
-    with NoStdStreams():
-        #driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
-        driver = webdriver.PhantomJS(PhantomJsDriverManager().install())
-    driver.get("https://nutrition.sa.ucsc.edu/")
-    for x in range (0,4):
-        try:
-            # Get the parsed menu based on the starting index
+    if nocache or not (os.path.exists(dining.get_path() + dining.get_filename(college,date)) and os.path.isfile(dining.get_path() + dining.get_filename(college,date))):
+        # 4 meals so do it 4 times
+        options = webdriver.ChromeOptions()
+        #options.add_argument('--headless')
+        with NoStdStreams():
+            #driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
+            driver = webdriver.PhantomJS(PhantomJsDriverManager().install())
+        driver.get("https://nutrition.sa.ucsc.edu/")
+        cache_text = ""
+        for x in range (0,4):
             try:
-                meal_name, menu = dining.parse_menu(driver, college, dining.get_url(college,date), x)
-            except Exception as e: print(e)
-            #meal_name, menu = dining.parse_menu(soup, startIndex)
-            if x==0 and meal_name == "Lunch":
-                desired_meal -= 1
-            elif x==0 and meal_name == "Dinner":
-                desired_meal -= 2
-            elif x==0 and meal_name == "Late":
-                desired_meal -= 3
-            
-            # Print a seperator before the menu if it isn't our first time
-
+                # Get the parsed menu based on the starting index
+                try:
+                    meal_name, menu = dining.parse_menu(driver, college, dining.get_url(college,date), x)
+                except Exception as e: print(e)
+                
+                # Start saving the text to cache
+                cache_text += meal_name + '\n'
+                for i in menu:
+                    cache_text += i + '\n'
+                cache_text += '\n'
+                
+                if x==0 and meal_name == "Lunch":
+                    desired_meal -= 1
+                elif x==0 and meal_name == "Dinner":
+                    desired_meal -= 2
+                elif x==0 and meal_name == "Late":
+                    desired_meal -= 3
+                
+                # Print a seperator before the menu if it isn't our first time
+                if all_meals:
+                    if x != 0:
+                        print()
+                    # Print the menu
+                    dining.print_menu(meal_name,menu)
+                elif x == desired_meal:
+                    dining.print_menu(meal_name,menu)
+                # The next index has to add 3 and the length of the menu
+                startIndex += len(menu) + 3
+            except:
+                # No more meals
+                pass
+        driver.quit()
+        
+        # Cache it
+        if not infile:
+            if using_cache:
+                pass
+            else:
+                target_dt = dt.strptime(date, '%m/%d/%Y')
+                target_day = target_dt.day
+                today = target_dt.now().date()
+                today_day = today.day
+                if target_day < today_day or today_day + 7 < target_day:
+                    pass # Bad date
+                else:
+                    dining.cache(dining.get_filename(college, date), cache_text)
+    else: # This is using the cache
+        with open(dining.get_path() + dining.get_filename(college,date), 'r') as cache_file:
+            meals = list()
+            meals.append(list())
+            meals.append(list())
+            meals.append(list())
+            meals.append(list())
+            current_list = 0
+            for line in cache_file:
+                if "Breakfast" in line:
+                    current_list = 0
+                    continue
+                elif "Lunch" in line:
+                    current_list = 1
+                    continue
+                elif "Dinner" in line:
+                    current_list = 2
+                    continue
+                elif "Late" in line:
+                    current_list = 3
+                    continue
+                elif line == "":
+                    continue
+                else:
+                    pass
+                meals[current_list].append(line)
             if all_meals:
-                if x != 0:
-                    print()
-                # Print the menu
-                dining.print_menu(meal_name,menu)
-            elif x == desired_meal:
-                dining.print_menu(meal_name,menu)
-            # The next index has to add 3 and the length of the menu
-            startIndex += len(menu) + 3
-        except:
-            # No more meals
-            pass
-    driver.quit()
-
-    
+                dining.print_menu("Breakfast", meals[0])
+                print()
+                dining.print_menu("Lunch", meals[1])
+                print()
+                dining.print_menu("Dinner", meals[2])
+                print()
+                dining.print_menu("Late", meals[3])
+            elif desired_meal == 0:
+                dining.print_menu("Breakfast", meals[0])
+            elif desired_meal == 1:
+                dining.print_menu("Lunch", meals[1])
+            elif desired_meal == 2:
+                dining.print_menu("Dinner", meals[2])
+            else:
+                dining.print_menu("Late", meals[3])
     
 if __name__ == '__main__':
     description = 'Program to display UCSC dining hall options in all dining halls'
