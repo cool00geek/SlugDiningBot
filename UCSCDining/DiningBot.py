@@ -59,6 +59,7 @@ def get_menu(dining, college_name, meal=""):
                             text += "\n"+meal_name + " has " + str(len(menu)) + " dishes"
                             for x in menu:
                                 text += "\n" + x
+                        break
                     # The next index has to add 3 and the length of the menu
                     startIndex += len(menu) + 3
                 except:
@@ -113,7 +114,6 @@ def get_menu(dining, college_name, meal=""):
                         text += "\nBreakfast has " + str(len(meals[0])) + " dishes"
                         for x in menu:
                             text += "\n" + x
-                    break
                 elif desired_meal == 1:
                     if len(menu) == 0:
                         text +="\nDining Hall Closed!"
@@ -121,7 +121,6 @@ def get_menu(dining, college_name, meal=""):
                         text += "\nLunch has " + str(len(meals[0])) + " dishes"
                         for x in menu:
                             text += "\n" + x
-                    break
                 elif desired_meal == 2:
                     if len(menu) == 0:
                         text +="\nDining Hall Closed!"
@@ -129,7 +128,6 @@ def get_menu(dining, college_name, meal=""):
                         text += "\nDinner has " + str(len(meals[0])) + " dishes"
                         for x in menu:
                             text += "\n" + x
-                    break
                 else:
                     if len(menu) == 0:
                         text +="\nDining Hall Closed!"
@@ -137,7 +135,6 @@ def get_menu(dining, college_name, meal=""):
                         text += "\nLate Night has " + str(len(meals[0])) + " dishes"
                         for x in menu:
                             text += "\n" + x
-                    break
 
         return text
 
