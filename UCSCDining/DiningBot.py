@@ -19,6 +19,7 @@ def get_menu(dining, college_name, meal=""):
             
         text = college_name
         
+        college = college_name
         if not meal=="":
             desired_meal = dining.get_desired_meal(meal)
             if desired_meal == -1:
