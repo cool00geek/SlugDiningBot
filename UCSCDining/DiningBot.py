@@ -26,7 +26,7 @@ def get_menu(dining, college_name, meal=""):
         else:
             desired_meal = dining.get_current_meal()
 
-        if nocache or not (os.path.exists(dining.get_path() + dining.get_filename(college,date)) and os.path.isfile(dining.get_path() + dining.get_filename(college,date))):
+        if not (os.path.exists(dining.get_path() + dining.get_filename(college,date)) and os.path.isfile(dining.get_path() + dining.get_filename(college,date))):
             driver = dining.open_driver()
             cache_text = ""
             for x in range (0,4):
