@@ -8,6 +8,9 @@ import os
 from pathlib import Path
 from bs4 import BeautifulSoup
 from datetime import datetime as dt
+from selenium import webdriver
+#from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.phantomjs import PhantomJsDriverManager
 
 cowell_names = ['cowell', 'cowell college', 'stevenson', 'stevenson college', 'cowell stevenson']
 crown_names = ['crown', 'crown college', 'merrill', 'merrill college', 'crown merrill']
@@ -15,6 +18,23 @@ porter_names = ['porter', 'porter college', 'kresge', 'kresge college', 'porter 
 rcc_names = ['rcc', 'rachel carson', 'rachel carson college', 'oakes', 'oakes college', 'rachel']
 c9_names = ["c9", '9', 'c10', '10', 'college 9', 'college 10', 'college9', 'college10', 'college', '9/10', 'nine', 'ten']
 
+# Taken from https://codereview.stackexchange.com/questions/25417/is-there-a-better-way-to-make-a-function-silent-on-need
+class NoStdStreams(object):
+    def __init__(self,stdout = None, stderr = None):
+        self.devnull = open(os.devnull,'w')
+        self._stdout = stdout or self.devnull or sys.stdout
+        self._stderr = stderr or self.devnull or sys.stderr
+
+    def __enter__(self):
+        self.old_stdout, self.old_stderr = sys.stdout, sys.stderr
+        self.old_stdout.flush(); self.old_stderr.flush()
+        sys.stdout, sys.stderr = self._stdout, self._stderr
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self._stdout.flush(); self._stderr.flush()
+        sys.stdout = self.old_stdout
+        sys.stderr = self.old_stderr
+        self.devnull.close()
 
 class UCSCDining:
     def __init__(self):
@@ -45,7 +65,7 @@ class UCSCDining:
         elif college in rcc_names:
             return "Rachel+Carson+Oakes"
         elif college in c9_names:
-            return "+Colleges+Nine+%26+Ten+"
+            return "Colleges+Nine+%26+Ten"
         return ""
     
     def get_college_name(self, raw_name):
@@ -115,14 +135,16 @@ class UCSCDining:
         
     def get_url(self, college, date):
         month,date,year = date.split("/")
-        url="https://nutrition.sa.ucsc.edu/menuSamp.asp?myaction=read&sName=&dtdate={month}%2F{day}%2F{year}&locationNum={num}&locationName=%20{name}+Dining+Hall&naFlag=1"
+        #url="https://nutrition.sa.ucsc.edu/menuSamp.asp?myaction=read&sName=&dtdate={month}%2F{day}%2F{year}&locationNum={num}&locationName=%20{name}+Dining+Hall&naFlag=1"
+        url="https://nutrition.sa.ucsc.edu/shortmenu.aspx?sName=UC+Santa+Cruz+Dining&locationNum={num}&locationName={name}+Dining+Hall&naFlag=1&WeeksMenus=UCSC+-+This+Week%27s+Menus&myaction=read&dtdate={month}%2F{day}%2F{year}"
         return url.format(num=self.get_dining_num(college), name=self.get_dining_hall_url(college), month=str(int(month)), day=str(int(date)), year=year)
     
     # Parse the menu
-    def parse_menu(self, soup, start_index):
+    # This is broken after the upgrades made in summer 2019
+    def parse_menu_old(self, soup, start_index):
         # Since the menu is in table form, get the tables
         tables = soup.find_all('table')
-
+        
         # Create a list for the actual text. There are a LOT of empty lines
         menu = list()
         for i in tables:
@@ -144,6 +166,45 @@ class UCSCDining:
         # Finally return the label and the list with all the items
         return meal_label, meal_items
     
+    def parse_menu(self, driver, college, url, start_index):
+        raw_college = college.lower()
+        if college in cowell_names:
+            my_college = 2 # //*[@id="locationchoices"]/ul/li[2]/a
+        elif college in crown_names:
+            my_college = 3
+        elif college in porter_names:
+            my_college=4
+        elif college in rcc_names:
+            my_college = 5
+        elif college in c9_names:
+            my_college = 1 # //*[@id="locationchoices"]/ul/li[1]/a
+        else:
+            exit(4)
+           
+        try:
+            link = driver.find_element_by_xpath('//*[@id="locationchoices"]/ul/li['+ str(my_college) + ']/a')
+            link.click()
+        except:
+            pass
+        driver.get(url)
+        start_index += 1
+        try:
+            meal_label = driver.find_element_by_xpath("/html/body/table[2]/tbody/tr[" + str(start_index) + "]/td/table/tbody/tr[1]/td/table/tbody/tr/td[1]/div")
+            label = meal_label.text
+        except Exception as e:
+            #print(e)
+            return "", list()
+        items=list()
+        try:
+            table_elements = driver.find_elements_by_xpath("/html/body/table[2]/tbody/tr[" + str(start_index) + "]/td/table/tbody/tr[2]/td/table/tbody/tr")
+            for i in range(1,len(table_elements) + 1):
+                item = driver.find_element_by_xpath("/html/body/table[2]/tbody/tr[" + str(start_index) + "]/td/table/tbody/tr[2]/td/table/tbody/tr["+str(i)+"]/td[1]/table/tbody/tr/td[1]/div/span")
+                #print(item.text)
+                items.append(item.text)
+        except Exception as e: print(e)
+        return label, items
+        
+        
     def print_menu(self, meal, menu):
         # Convert Late -> Late Night
         if meal == "Late":
@@ -272,10 +333,19 @@ def main(infile="", college="", datestr="", nocache=False, meal="", all_meals=Fa
             desired_meal = meal_id
 
     # 4 meals so do it 4 times
+    options = webdriver.ChromeOptions()
+    #options.add_argument('--headless')
+    with NoStdStreams():
+        #driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
+        driver = webdriver.PhantomJS(PhantomJsDriverManager().install())
+    driver.get("https://nutrition.sa.ucsc.edu/")
     for x in range (0,4):
         try:
             # Get the parsed menu based on the starting index
-            meal_name, menu = dining.parse_menu(soup, startIndex)
+            try:
+                meal_name, menu = dining.parse_menu(driver, college, dining.get_url(college,date), x)
+            except Exception as e: print(e)
+            #meal_name, menu = dining.parse_menu(soup, startIndex)
             if x==0 and meal_name == "Lunch":
                 desired_meal -= 1
             elif x==0 and meal_name == "Dinner":
@@ -297,6 +367,7 @@ def main(infile="", college="", datestr="", nocache=False, meal="", all_meals=Fa
         except:
             # No more meals
             pass
+    driver.quit()
 
     
     
