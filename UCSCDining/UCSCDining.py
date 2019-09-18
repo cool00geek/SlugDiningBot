@@ -9,7 +9,8 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 from datetime import datetime as dt
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+#from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.phantomjs import PhantomJsDriverManager
 
 cowell_names = ['cowell', 'cowell college', 'stevenson', 'stevenson college', 'cowell stevenson']
 crown_names = ['crown', 'crown college', 'merrill', 'merrill college', 'crown merrill']
@@ -136,8 +137,6 @@ class UCSCDining:
         month,date,year = date.split("/")
         #url="https://nutrition.sa.ucsc.edu/menuSamp.asp?myaction=read&sName=&dtdate={month}%2F{day}%2F{year}&locationNum={num}&locationName=%20{name}+Dining+Hall&naFlag=1"
         url="https://nutrition.sa.ucsc.edu/shortmenu.aspx?sName=UC+Santa+Cruz+Dining&locationNum={num}&locationName={name}+Dining+Hall&naFlag=1&WeeksMenus=UCSC+-+This+Week%27s+Menus&myaction=read&dtdate={month}%2F{day}%2F{year}"
-        #url="https://nutrition.sa.ucsc.edu/shortmenu.aspx?sName=UC+Santa+Cruz+Dining&locationNum=40&locationName=Colleges+Nine+%26+Ten+Dining+Hall&naFlag=1&WeeksMenus=UCSC+-+This+Week%27s+Menus&myaction=read&dtdate=9%2f19%2f2019"
-        #url="https://nutrition.sa.ucsc.edu/shortmenu.aspx?sName=UC+Santa+Cruz+Dining&locationNum=40&locationName=Colleges+Nine+%26+Ten+Dining+Hall&naFlag=1&WeeksMenus=UCSC+-+This+Week%27s+Menus&myaction=read&dtdate=9%2f19%2f2019"
         return url.format(num=self.get_dining_num(college), name=self.get_dining_hall_url(college), month=str(int(month)), day=str(int(date)), year=year)
     
     # Parse the menu
@@ -337,7 +336,8 @@ def main(infile="", college="", datestr="", nocache=False, meal="", all_meals=Fa
     options = webdriver.ChromeOptions()
     #options.add_argument('--headless')
     with NoStdStreams():
-        driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
+        #driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
+        driver = webdriver.PhantomJS(PhantomJsDriverManager().install())
     driver.get("https://nutrition.sa.ucsc.edu/")
     for x in range (0,4):
         try:
