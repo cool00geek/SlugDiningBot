@@ -2,6 +2,7 @@ import datetime
 import os
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime as dt
 from UCSCDining import UCSCDining
 
 def get_menu(dining, college_name, meal=""):
@@ -10,13 +11,6 @@ def get_menu(dining, college_name, meal=""):
         now_date = datetime.datetime.now().date()
         date = str(now_date.month) +"/" + str(now_date.day) + "/" + str(now_date.year)
 
-        if os.path.exists(dining.get_path() + dining.get_filename(college_name, date)):
-            input_source = open(dining.get_path() + dining.get_filename(college_name, date), 'r')
-        else:
-            url = dining.get_url(college_name, date)
-            input_source = requests.get(url).text
-            dining.cache(dining.get_filename(college_name, date), input_source)
-            
         text = college_name
         
         college = college_name
@@ -62,26 +56,22 @@ def get_menu(dining, college_name, meal=""):
                                 text += "\n" + x
                         break
                     # The next index has to add 3 and the length of the menu
-                    startIndex += len(menu) + 3
-                except:
+                except Exception as e:
                     print(e)
                     text +="\nDining Hall Closed!"
                     break
             driver.quit()
             
             # Cache it
-            if not infile:
-                if using_cache:
-                    pass
-                else:
-                    target_dt = dt.strptime(date, '%m/%d/%Y')
-                    target_day = target_dt.day
-                    today = target_dt.now().date()
-                    today_day = today.day
-                    if target_day < today_day or today_day + 7 < target_day:
-                        pass # Bad date
-                    else:
-                        dining.cache(dining.get_filename(college, date), cache_text)
+            
+            target_dt = dt.strptime(date, '%m/%d/%Y')
+            target_day = target_dt.day
+            today = target_dt.now().date()
+            today_day = today.day
+            if target_day < today_day or today_day + 7 < target_day:
+                    pass # Bad date
+            else:
+                    dining.cache(dining.get_filename(college, date), cache_text)
         else: # This is using the cache
             with open(dining.get_path() + dining.get_filename(college,date), 'r') as cache_file:
                 meals = list()
@@ -109,33 +99,33 @@ def get_menu(dining, college_name, meal=""):
                         pass
                     meals[current_list].append(line)
                 if desired_meal == 0:
-                    if len(menu) == 0:
+                    if len(meals[0]) == 0:
                         text +="\nDining Hall Closed!"
                     else:
                         text += "\nBreakfast has " + str(len(meals[0])) + " dishes"
-                        for x in menu:
-                            text += "\n" + x
+                        for x in meals[0]:
+                            text += "\n" + x.strip()
                 elif desired_meal == 1:
-                    if len(menu) == 0:
+                    if len(meals[1]) == 0:
                         text +="\nDining Hall Closed!"
                     else:
-                        text += "\nLunch has " + str(len(meals[0])) + " dishes"
-                        for x in menu:
-                            text += "\n" + x
+                        text += "\nLunch has " + str(len(meals[1])) + " dishes"
+                        for x in meals[1]:
+                            text += "\n" + x.strip()
                 elif desired_meal == 2:
-                    if len(menu) == 0:
+                    if len(meals[2]) == 0:
                         text +="\nDining Hall Closed!"
                     else:
-                        text += "\nDinner has " + str(len(meals[0])) + " dishes"
-                        for x in menu:
-                            text += "\n" + x
+                        text += "\nDinner has " + str(len(meals[2])) + " dishes"
+                        for x in meals[2]:
+                            text += "\n" + x.strip()
                 else:
-                    if len(menu) == 0:
+                    if len(meals[3]) == 0:
                         text +="\nDining Hall Closed!"
                     else:
-                        text += "\nLate Night has " + str(len(meals[0])) + " dishes"
-                        for x in menu:
-                            text += "\n" + x
+                        text += "\nLate Night has " + str(len(meals[3])) + " dishes"
+                        for x in meals[3]:
+                            text += "\n" + x.strip()
 
         return text
 
