@@ -54,7 +54,6 @@ def get_menu(dining, college_name, meal=""):
                             text += "\n"+meal_name + " has " + str(len(menu)) + " dishes"
                             for x in menu:
                                 text += "\n" + x
-                        break
                     # The next index has to add 3 and the length of the menu
                 except Exception as e:
                     print(e)
