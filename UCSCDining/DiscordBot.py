@@ -65,7 +65,7 @@ async def on_message(message):
             send_msg = "That's not being served!"
         #bot.send_message(chat_id=update.message.chat_id, text=)
         #await client.send_message(message.channel, send_msg)
-        await message.channel.sendsend_msg)
+        await message.channel.send(send_msg)
     #elif message.content.startswith('!'):
     #    msg = "I don't understand that command!"
     #    await client.send_message(message.channel, msg)
