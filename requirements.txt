@@ -1,7 +1,7 @@
 requests==2.20.0
 python_telegram_bot==11.1.0
 beautifulsoup4==4.7.0
-discord.py==0.16.12
+discord.py>=1.0.0
 lxml==4.2.5
 pymessenger==0.0.7.0
 flask==1.0.2
