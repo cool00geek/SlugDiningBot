@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import discord
+#from discord.ext.commands import Bot, Greedy
+#from discord import User
 import os
 from UCSCDining import UCSCDining
 import DiningBot
@@ -9,7 +11,12 @@ token = os.environ.get('DISCORD_UCSC_KEY')
 
 client = discord.Client()
 
+#bot = Bot(command_prefix='!@#$%^&()')
 
+#@bot.command()
+#async def pm(ctx, users: Greedy[User], *, message):
+#    for user in users:
+#        await user.send(message)
 
 @client.event
 async def on_message(message):
