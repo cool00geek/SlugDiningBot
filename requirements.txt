@@ -1,4 +1,4 @@
-requests==2.31.0
+requests==2.32.0
 python_telegram_bot==11.1.0
 beautifulsoup4==4.7.0
 discord.py>=1.0.0
